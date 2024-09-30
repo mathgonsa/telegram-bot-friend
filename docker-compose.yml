@@ -1,0 +1,18 @@
+
+services:
+  # bot:
+  #   build: .
+  #   volumes:
+  #     - .:/code
+  #   depends_on:
+  #     - redis
+  #   restart: unless-stopped
+  redis:
+    container_name: redis
+    image: redis/redis-stack:latest
+    volumes:
+      - ./.storage:/data
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    restart: unless-stopped
