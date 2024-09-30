@@ -1,5 +1,5 @@
 from src.services import redis
-from src.utils import capitalize, tokenizer
+from src.utils import tokenizer
 
 MAX_WORDS = 300
 MAX_MESSAGES = 1
@@ -61,4 +61,4 @@ def generate_sentence(chat_id, pair):
     if sentence[-1:] not in END_SENTENCE:
         sentence += tokenizer.random_end_sentence_token()
 
-    return capitalize(sentence)
+    return sentence.capitalize()

@@ -15,7 +15,6 @@ def split_to_trigrams(words_list):
 
 
 def extract_words(message):
-
     symbols = re.sub(r"\s", " ", message)
     return list(filter(None, map(prettify, symbols.split(" "))))
 

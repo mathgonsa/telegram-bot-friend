@@ -15,10 +15,9 @@ def learn(chat_id: str, message: str):
 
 
 def store(chat_id: str, trigrams):
+    cursor = redis.instance()
 
-    redis_instance = redis.instance()
-    counter_pipe = redis_instance.pipeline()
-    save_pipe = redis_instance.pipeline()
+    save_pipe = cursor.pipeline()
 
     for trigram in trigrams:
         member = SEPARATOR.join(trigram)
@@ -26,11 +25,6 @@ def store(chat_id: str, trigrams):
         key = f"trigrams:{chat_id}:{member}"
         last_word = trigram[-1]
 
-        counter_pipe.exists(key)
         save_pipe.sadd(key, last_word)
 
-    counter_key = f"trigrams:count:{chat_id}"
-    new_pairs_count = sum(1 if not exists else 0 for exists in counter_pipe.execute())
-
-    save_pipe.incrby(counter_key, new_pairs_count)
     save_pipe.execute()
