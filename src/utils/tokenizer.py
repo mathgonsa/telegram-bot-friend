@@ -1,48 +1,40 @@
 import random
 import re
 
-chain_len = 3
-endsen = {".", "!", "?"}
-
-garbage = ",.!?;:"
+# Constants
+CHAIN_LEN = 3
+ENDSEN = {".", "!", "?"}
+GARBAGE = ",.!?;:"
 
 
 def split_to_trigrams(words_list):
-    if len(words_list) <= chain_len:
+    if len(words_list) <= CHAIN_LEN:
         return []
 
-    words = []
-
-    for word in words_list:
-        words.append(word)
-
-    return [words[i : i + chain_len + 1] for i in range(len(words) - chain_len)]
+    return [words_list[i : i + CHAIN_LEN + 1] for i in range(len(words_list) - CHAIN_LEN)]
 
 
 def extract_words(message):
-    symbols = list(re.sub(r"\s", " ", message))
-    return list(filter(None, map(prettify, "".join(symbols).split(" "))))
+
+    symbols = re.sub(r"\s", " ", message)
+    return list(filter(None, map(prettify, symbols.split(" "))))
 
 
 def prettify(word):
     lowercase_word = word.lower().strip()
-    last_symbol = lowercase_word[-1:]
-    if last_symbol not in endsen:
-        last_symbol = ""
+    last_symbol = lowercase_word[-1:] if lowercase_word[-1:] in ENDSEN else ""
 
-    pretty_word = lowercase_word.strip(garbage)
+    pretty_word = lowercase_word.strip(GARBAGE)
 
-    if pretty_word != "" and len(pretty_word) > 2:
+    if len(pretty_word) > 2:
         return pretty_word + last_symbol
-    elif lowercase_word in garbage:
-        return None
 
-    return lowercase_word
+    return None if lowercase_word in GARBAGE else lowercase_word
 
 
 def random_element(xlist):
-    return random.choice(xlist) if len(xlist) > 0 else None
+    return random.choice(xlist) if xlist else None
 
 
 def random_end_sentence_token():
-    return random_element(list(endsen))
+    return random_element(list(ENDSEN))
