@@ -1,20 +1,22 @@
 import telebot
 
 from src.core.learn import learn
-from src.core.reply import generate_reply
-from src.services.model import generate_reply as model_reply
+from src.core.reply import generate
 
 
 def learn_and_reply(message: telebot.types.Message):
 
-    learn(message.chat.id, message.text)
+    learn(message)
 
-    # message_reply = generate_reply(message.chat.id, message.text)
-    # if message_reply is None:
-    #     return False, message_reply
+    should_answer = False
 
-    message_reply = model_reply(message.text)
+    if not should_answer:
+        return False, None
 
-    is_to_reply = message_reply is not None
+    message_reply = generate(message)
 
-    return is_to_reply, message_reply
+    if not message_reply:
+        return False, None
+
+    print(message_reply)
+    return False, message_reply

@@ -1,13 +1,15 @@
 import redis
 
+from src.config import REDIS_DB, REDIS_HOST, REDIS_PORT
+
 
 class Redis:
 
     def __init__(self):
         self.pool = redis.ConnectionPool(
-            host="localhost",
-            port="6379",
-            db="0",
+            host=REDIS_HOST,
+            port=REDIS_PORT,
+            db=REDIS_DB,
         )
 
     def instance(self):
