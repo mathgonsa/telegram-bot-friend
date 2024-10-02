@@ -46,7 +46,6 @@ tokenizer = Tokenizer()
 from src.repository import *
 
 trigram_repository = TrigramRepository()
-chance_repository = ChanceRepository()
 media_repository = MediaRepository()
 job_repository = JobRepository()
 

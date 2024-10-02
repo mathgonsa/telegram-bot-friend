@@ -6,13 +6,7 @@ from telegram.ext import Filters
 from telegram.ext import MessageHandler as ParentHandler
 from telegram.ext.dispatcher import run_async
 
-from src.config import (
-    chance_repository,
-    config,
-    data_learner,
-    media_checker,
-    reply_generator,
-)
+from src.config import config, data_learner, media_checker, reply_generator
 from src.domain.message import Message
 
 messages_error = [
@@ -27,14 +21,12 @@ class MessageHandler(ParentHandler):
         self.data_learner = data_learner
         self.reply_generator = reply_generator
         self.media_checker = media_checker
-        self.chance_repository = chance_repository
         self.spam_stickers = config.getlist("bot", "spam_stickers")
         self.media_checker_messages = config.getlist("media_checker", "messages")
 
     run_async
 
     def handle(self, bot, update):
-        # chance = self.chance_repository.get(update.message.chat_id)
         message = Message(chance=25, message=update.message)
 
         self.__check_media_uniqueness(bot, message)
@@ -49,7 +41,7 @@ class MessageHandler(ParentHandler):
             bot.send_message(chat_id=message.chat_id, reply_to_message_id=message.message.message_id, text=choice(self.media_checker_messages))
 
     def __process_message(self, bot, message):
-        logging.debug(f"[Chat {message.chat_id}] {message}")
+        logging.info(f"MESSAGE_RECEIVED: {message}")
 
         should_answer = message.should_answer()
 
@@ -58,14 +50,17 @@ class MessageHandler(ParentHandler):
 
         self.data_learner.learn(message)
 
+        message_answer = None
+
         if should_answer:
-            text = self.reply_generator.generate(message)
-            if text is None:
-                text = choice(messages_error)
+            message_answer = self.reply_generator.generate(message)
+            if message_answer is None:
+                # text = choice(messages_error)
+                pass
 
+        if message_answer:
             reply_id = None if not message.is_reply_to_bot() else message.message.message_id
+            bot.send_message(chat_id=message.chat_id, reply_to_message_id=reply_id, text=message_answer)
 
-            logging.debug("[Chat %s %s answer/reply] %s" % (message.chat_type, message.chat_id, text))
-
-            bot.send_message(chat_id=message.chat_id, reply_to_message_id=reply_id, text=text)
-            logging.debug(f"Message sent to chat {message.chat_id} with reply ID {reply_id}")
+        logging.info(f"MESSAGE_REPLY: {should_answer} {message_answer}")
+        return
