@@ -5,17 +5,12 @@ from src.config import media_repository
 
 
 class MediaUniquenessChecker:
-    """
-    Checks message links and photos for uniqueness
-    """
 
     def __init__(self):
         self.media_repository = media_repository
 
     def check(self, message):
-        """
-        Returns True if at least one media entity was already in this chat
-        """
+
         self.media_repository.clear_stale_entries(chat_id=message.chat_id, dt=datetime.now())
         media = self.__extract_media(message)
 

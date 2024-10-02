@@ -55,4 +55,3 @@ from src.service import *
 data_learner = DataLearner()
 reply_generator = ReplyGenerator()
 media_checker = MediaUniquenessChecker()
-chat_purge_queue = ChatPurgeQueue()

@@ -10,7 +10,6 @@ class Tokenizer:
         self.stop_word = config["grammar"]["stop_word"]
         self.endsen = config["grammar"]["endsen"]
         self.garbage = config["grammar"]["garbage"]
-        # https://core.telegram.org/bots/api#messageentity
         self.garbage_entities = config.getlist("grammar", "garbage_entities")
 
     def split_to_trigrams(self, words_list):

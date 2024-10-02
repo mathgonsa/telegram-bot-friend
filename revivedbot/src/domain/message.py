@@ -40,7 +40,7 @@ class Message(AbstractEntity):
         return random.randint(0, 100) < self.chance
 
     def is_large_message(self):
-        return len(self.message.text.split()) > 60 and random.randint(0, 100) < 20
+        return len(self.message.text.split()) > 40 and random.randint(0, 100) < 45
 
     def should_answer(self):
         should = self.has_anchors() or self.is_private() or self.is_reply_to_bot() or self.is_random_answer() or self.is_large_message()

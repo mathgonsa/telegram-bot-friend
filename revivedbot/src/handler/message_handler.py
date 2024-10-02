@@ -35,7 +35,7 @@ class MessageHandler(ParentHandler):
 
     def handle(self, bot, update):
         # chance = self.chance_repository.get(update.message.chat_id)
-        message = Message(chance=20, message=update.message)
+        message = Message(chance=25, message=update.message)
 
         self.__check_media_uniqueness(bot, message)
 
