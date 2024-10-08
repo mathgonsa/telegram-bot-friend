@@ -1,0 +1,8 @@
+.dump
+.dump/*
+
+.storage
+.storage/*
+
+.cache
+.cache/*

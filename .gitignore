@@ -5,6 +5,9 @@
 .dump/*
 .dump
 
+.cache
+.cache/*
+
 revivedbot/cfg/main.docker.cfg
 setup.py
 
